@@ -1,0 +1,8 @@
+<h2>Demande de main d'œuvre</h2>
+
+<form (submit)="enregistrerOffre()">
+  <!-- Champs du formulaire pour enregistrer l'offre d'emploi -->
+  <input type="text" [(ngModel)]="titre" name="titre" placeholder="Titre de l'offre d'emploi">
+  <input type="text" [(ngModel)]="description" name="description" placeholder="Description de l'offre d'emploi">
+  <button type="submit">Enregistrer</button>
+</form>
