@@ -14,6 +14,7 @@ import { BookingRequestComponent } from './booking-request/booking-request.compo
 import { AccountCreationComponent } from './account-creation/account-creation.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeaderComponent } from './header/header.component';
+import { JobOfferService} from "./shared/job-offer.service";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { HeaderComponent } from './header/header.component';
     MatToolbarModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [JobOfferService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

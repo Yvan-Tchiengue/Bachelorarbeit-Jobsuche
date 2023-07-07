@@ -1,10 +1,10 @@
 <h2>Bienvenue sur notre site web</h2>
 
 <!-- Formulaire de connexion -->
-<form (submit)="login()">
-  <input type="email" [(ngModel)]="loginEmail" name="loginEmail" placeholder="Email">
-  <input type="password" [(ngModel)]="loginPassword" name="loginPassword" placeholder="Mot de passe">
-  <button type="submit">Se connecter</button>
+<form (ngSubmit)="submit()">
+  <input [(ngModel)]="credentials.email" name="email" placeholder="Email" required>
+  <input [(ngModel)]="credentials.motDePasse" name="motDePasse" placeholder="Mot de passe" type="password" required>
+  <button type="submit">Se connecter tony</button>
 </form>
 <button (click)="demanderCalcul()">Effectuer le calcul</button>
 <div>la reponse s'affiche ici a coté:</div>

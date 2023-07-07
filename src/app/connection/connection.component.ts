@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { JobOfferService} from "../shared/job-offer.service";
+
 
 @Component({
   selector: 'app-connection',
@@ -8,13 +10,28 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ConnectionComponent implements OnInit {
   reponse?: number;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: JobOfferService) { }
 
   ngOnInit(): void {
   }
 
+  credentials = {
+    email: '',
+    motDePasse: ''
+  };
+
   loginEmail?: string;
   loginPassword?: string;
+
+  submit() {
+    this.authService.authentification(this.credentials).subscribe(
+      response => {
+        localStorage.setItem('token', response.token);
+        alert('Authentification réussie!');
+      },
+      err => alert('Erreur lors de l\'authentification: ' + err.error.error)
+    );
+  }
 
   login() {
     // Effectuer l'authentification avec le backend

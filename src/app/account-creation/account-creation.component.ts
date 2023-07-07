@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { JobOfferService} from "../shared/job-offer.service";
+
 
 @Component({
   selector: 'app-account-creation',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountCreationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private rechercheurEmploiService: JobOfferService) { }
 
   ngOnInit(): void {
   }
@@ -16,6 +18,20 @@ export class AccountCreationComponent implements OnInit {
   email?: string;
   motDePasse?: string;
   typeCompte?: string;
+
+  rechercheurEmploi = {
+    nom: '',
+    email: '',
+    motDePasse: '',
+    typeCompte: ''
+  };
+
+  submit() {
+    this.rechercheurEmploiService.creerCompte(this.rechercheurEmploi).subscribe(
+      () => alert('Compte créé avec succès!'),
+      err => alert('Erreur lors de la création du compte: ' + err.message)
+    );
+  }
 
   creerCompte() {
     // Créer le compte avec le backend
