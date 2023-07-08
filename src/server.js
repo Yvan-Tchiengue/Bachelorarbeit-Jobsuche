@@ -86,8 +86,43 @@ con.query('CREATE DATABASE IF NOT EXISTS Jobsuche;', (err, result) => {
   });
 });
 
+/*con.query('USE Jobsuche', (err, result) => {
+    if (err) throw err;
+
+    con.query('ALTER TABLE Employeur ADD COLUMN type_de_compte VARCHAR(255);', (err, result) => {
+        if (err) throw err;
+        console.log("Column type_de_compte added to Employeur table");
+    });
+
+    con.query('ALTER TABLE RechercheurEmploi ADD COLUMN type_de_compte VARCHAR(255);', (err, result) => {
+        if (err) throw err;
+        console.log("Column type_de_compte added to RechercheurEmploi table");
+    });
+}); */
+
+//creation d'une nouvelle table pour contenir toutes les candidatures aux offres d'emploi
+con.changeUser({database : 'Jobsuche'}, function(err) {
+  if (err) throw err;
+
+  con.query(`
+    CREATE TABLE IF NOT EXISTS Candidatures (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        rechercheurEmploiId INT,
+        offreEmploiId INT,
+        dateCandidature TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (rechercheurEmploiId) REFERENCES RechercheurEmploi(id),
+        FOREIGN KEY (offreEmploiId) REFERENCES OffreEmploi(id)
+    )`, (err, result) => {
+    if (err) throw err;
+    console.log("Candidatures table created");
+  });
+});
+
+
+
+
 app.get('/api/calcul', (req, res) => {
-  const resultat = 2 + 2;
+  const resultat = 2 + 4;
   res.send(resultat.toString());
 });
 
