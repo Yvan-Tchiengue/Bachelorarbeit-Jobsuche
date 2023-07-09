@@ -1,11 +1,11 @@
 <form (ngSubmit)="submit()">
-  <h2>Création de compte</h2>
-  <input [(ngModel)]="rechercheurEmploi.nom" name="nom" placeholder="Nom" required>
-  <input [(ngModel)]="rechercheurEmploi.email" name="email" placeholder="Email" required>
-  <input [(ngModel)]="rechercheurEmploi.motDePasse" name="motDePasse" placeholder="Mot de passe" type="password" required>
-  <select [(ngModel)]="rechercheurEmploi.typeCompte" name="typeCompte">
-    <option value="employe">Employé</option>
-    <option value="employeur">Employeur</option>
+  <h2>Account Creation</h2>
+  <input [(ngModel)]="jobSeeker.namee" name="nom" placeholder="Nom" required>
+  <input [(ngModel)]="jobSeeker.email" name="email" placeholder="Email" required>
+  <input [(ngModel)]="jobSeeker.password" name="motDePasse" placeholder="Mot de passe" type="password" required>
+  <select [(ngModel)]="jobSeeker.type_of_account" name="typeCompte">
+    <option value="jobseeker">JobSeeker</option>
+    <option value="employe">Employe</option>
   </select>
-  <button type="submit">Créer le compte</button>
+  <button type="submit">Create an account</button>
 </form>

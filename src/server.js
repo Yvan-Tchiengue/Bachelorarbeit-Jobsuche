@@ -32,144 +32,160 @@ con.connect(function(err) {
   });*/
 });
 
-con.query('CREATE DATABASE IF NOT EXISTS Jobsuche;', (err, result) => {
-  if (err) throw err;
-  console.log("Database created");
-
-  con.changeUser({database : 'Jobsuche'}, function(err) {
+/*con.query('CREATE DATABASE IF NOT EXISTS JobSearch;', (err, result) => {
     if (err) throw err;
+    console.log("Database created");
 
-    con.query(`
-    CREATE TABLE IF NOT EXISTS Employeur (
+    con.changeUser({database : 'JobSearch'}, function(err) {
+        if (err) throw err;
+
+        con.query(`
+    CREATE TABLE IF NOT EXISTS Employer (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        nom VARCHAR(255),
-        adresse VARCHAR(255),
-        siteWeb VARCHAR(255),
+        namee VARCHAR(255),
+        adress VARCHAR(255),
         email VARCHAR(255),
         telephone VARCHAR(255)
     )`, (err, result) => {
-      if (err) throw err;
-      console.log("Employeur table created");
+            if (err) throw err;
+            console.log("Employer table created");
 
-      con.query(`
-      CREATE TABLE IF NOT EXISTS OffreEmploi (
+            con.query(`
+      CREATE TABLE IF NOT EXISTS JobOffer (
           id INT AUTO_INCREMENT PRIMARY KEY,
-          employeurId INT,
-          titre VARCHAR(255),
+          employerId INT,
+          title VARCHAR(255),
           description TEXT,
-          salaire FLOAT,
-          datePublication TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          lieu VARCHAR(255),
-          typeContrat VARCHAR(255),
-          secteur VARCHAR(255),
-          niveauExperience VARCHAR(255),
-          niveauEducation VARCHAR(255),
-          FOREIGN KEY (employeurId) REFERENCES Employeur(id)
+          salary FLOAT,
+          publicationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          location VARCHAR(255),
+          typeContract VARCHAR(255),
+          businessSector VARCHAR(255),
+          FOREIGN KEY (employerId) REFERENCES Employer(id)
       )`, (err, result) => {
-        if (err) throw err;
-        console.log("OffreEmploi table created");
+                if (err) throw err;
+                console.log("JobOffer table created");
 
-        con.query(`
-        CREATE TABLE IF NOT EXISTS RechercheurEmploi (
+                con.query(`
+        CREATE TABLE IF NOT EXISTS JobSeeker (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            nom VARCHAR(255),
+            namee VARCHAR(255),
             email VARCHAR(255),
-            motDePasse VARCHAR(255),
+            password VARCHAR(255),
             cv TEXT,
-            lettreMotivation TEXT
+            telephone VARCHAR(255),
+            motivationLetter TEXT
         )`, (err, result) => {
-          if (err) throw err;
-          console.log("RechercheurEmploi table created");
+                    if (err) throw err;
+                    console.log("JobSeeker table created");
+                });
+            });
         });
-      });
-    });
-  });
-});
-
-/*con.query('USE Jobsuche', (err, result) => {
-    if (err) throw err;
-
-    con.query('ALTER TABLE Employeur ADD COLUMN type_de_compte VARCHAR(255);', (err, result) => {
-        if (err) throw err;
-        console.log("Column type_de_compte added to Employeur table");
-    });
-
-    con.query('ALTER TABLE RechercheurEmploi ADD COLUMN type_de_compte VARCHAR(255);', (err, result) => {
-        if (err) throw err;
-        console.log("Column type_de_compte added to RechercheurEmploi table");
     });
 }); */
 
-//creation d'une nouvelle table pour contenir toutes les candidatures aux offres d'emploi
-con.changeUser({database : 'Jobsuche'}, function(err) {
-  if (err) throw err;
+/*con.query('USE JobSearch', (err, result) => {
+    if (err) throw err;
 
-  con.query(`
+    con.query('ALTER TABLE Employer ADD COLUMN type_of_account VARCHAR(255);', (err, result) => {
+        if (err) throw err;
+        console.log("Column type_of_account added to Employer table");
+    });
+
+    con.query('ALTER TABLE JobSeeker ADD COLUMN type_of_account VARCHAR(255);', (err, result) => {
+        if (err) throw err;
+        console.log("Column type_of_account added to JobSeeker table");
+    });
+});*/
+
+/*con.query('USE JobSearch', (err, result) => {
+    if (err) throw err;
+
+    con.query('ALTER TABLE Employer ADD COLUMN password VARCHAR(255);', (err, result) => {
+        if (err) throw err;
+        console.log("Column password added to Employer");
+    });
+});*/
+
+//creation d'une nouvelle table pour contenir toutes les candidatures aux offres d'emploi
+/*con.changeUser({database : 'JobSearch'}, function(err) {
+    if (err) throw err;
+
+    con.query(`
     CREATE TABLE IF NOT EXISTS Candidatures (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        rechercheurEmploiId INT,
-        offreEmploiId INT,
+        jobSeekerId INT,
+        jobOfferId INT,
         dateCandidature TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (rechercheurEmploiId) REFERENCES RechercheurEmploi(id),
-        FOREIGN KEY (offreEmploiId) REFERENCES OffreEmploi(id)
+        FOREIGN KEY (jobSeekerId) REFERENCES jobSeeker(id),
+        FOREIGN KEY (jobOfferId) REFERENCES jobOffer(id)
     )`, (err, result) => {
-    if (err) throw err;
-    console.log("Candidatures table created");
-  });
-});
-
-
-
+        if (err) throw err;
+        console.log("Candidatures table created");
+    });
+}); */
 
 app.get('/api/calcul', (req, res) => {
   const resultat = 2 + 4;
   res.send(resultat.toString());
 });
 
-app.post('/api/offres-emploi', (req, res) => {
-  const offreEmploi = req.body;
-  const query = 'INSERT INTO OffreEmploi SET ?';
-  connection.query(query, offreEmploi, (err, result) => {
+app.post('/api/jobs-offer', (req, res) => {
+  const jobOffer = req.body;
+  const query = 'INSERT INTO JobOffer SET ?';
+  connection.query(query, jobOffer, (err, result) => {
     if (err) {
       console.error(err);
-      res.status(500).json({ error: 'Erreur lors de la création de l\'offre d\'emploi' });
+      res.status(500).json({ error: 'Error when creating the job offer' });
       return;
     }
     res.json({ success: true });
   });
 });
 
-app.post('/api/rechercheurs-emploi', async (req, res) => {
-  const rechercheurEmploi = req.body;
+app.post('/api/account-creating', async (req, res) => {
+  const user = req.body;
 
-  // Hachage du mot de passe avant de l'insérer dans la base de données
+  // Hash the password before storing it in the database
   const salt = await bcrypt.genSalt(10);
-  rechercheurEmploi.motDePasse = await bcrypt.hash(rechercheurEmploi.motDePasse, salt);
+  user.password = await bcrypt.hash(user.password, salt);
 
-  const query = 'INSERT INTO RechercheurEmploi SET ?';
-  connection.query(query, rechercheurEmploi, (err, result) => {
+
+  let tableName;
+  if(user.type_of_account === 'jobseeker') {
+    tableName = 'JobSeeker';
+  } else if(user.type_of_account === 'employe') {
+    tableName = 'Employer';
+  } else {
+    res.status(400).json({ error: 'Invalid account type' });
+    return;
+  }
+
+  const query = `INSERT INTO ${tableName} SET ?`;
+  connection.query(query, user, (err, result) => {
     if (err) {
       console.error(err);
-      res.status(500).json({ error: 'Erreur lors de la création du compte' });
+      res.status(500).json({ error: 'Error when creating an account' });
       return;
     }
     res.json({ success: true });
   });
 });
+
 
 app.post('/api/authentification', (req, res) => {
-  const { email, motDePasse } = req.body;
+  const { email, password } = req.body;
 
-  connection.query('SELECT * FROM RechercheurEmploi WHERE email = ?', [email], async (error, results) => {
+  connection.query('SELECT * FROM JobSeeker WHERE email = ?', [email], async (error, results) => {
     if (error || results.length === 0) {
-      return res.status(400).json({ error: 'Email ou mot de passe incorrect' });
+      return res.status(400).json({ error: 'Incorrect email address or password' });
     }
 
     const user = results[0];
-    const isMatch = await bcrypt.compare(motDePasse, user.motDePasse);
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({ error: 'Email ou mot de passe incorrect' });
+      return res.status(400).json({ error: 'Incorrect email address or password' });
     }
 
     const token = jwt.sign({ id: user.id }, 'secretKey', { expiresIn: '1h' });

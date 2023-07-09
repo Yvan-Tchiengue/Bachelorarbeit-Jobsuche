@@ -9,25 +9,20 @@ import { JobOfferService} from "../shared/job-offer.service";
 })
 export class AccountCreationComponent implements OnInit {
 
-  constructor(private rechercheurEmploiService: JobOfferService) { }
+  constructor(private jobSeekerService: JobOfferService) { }
 
   ngOnInit(): void {
   }
 
-  nom?: string;
-  email?: string;
-  motDePasse?: string;
-  typeCompte?: string;
-
-  rechercheurEmploi = {
-    nom: '',
+  jobSeeker = {
+    namee: '',
     email: '',
-    motDePasse: '',
-    typeCompte: ''
+    password: '',
+    type_of_account: ''
   };
 
   submit() {
-    this.rechercheurEmploiService.creerCompte(this.rechercheurEmploi).subscribe(
+    this.jobSeekerService.creerCompte(this.jobSeeker).subscribe(
       () => alert('Compte créé avec succès!'),
       err => alert('Erreur lors de la création du compte: ' + err.message)
     );

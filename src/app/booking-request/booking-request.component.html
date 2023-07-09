@@ -1,14 +1,12 @@
-<h2>Demande de main d'œuvre</h2>
+<h2>Request for manpower.</h2>
 
 <!-- fichier: offre-emploi.component.html -->
 <form (ngSubmit)="submit()">
-  <input [(ngModel)]="offreEmploi.titre" name="titre" placeholder="Titre" required>
-  <textarea [(ngModel)]="offreEmploi.description" name="description" placeholder="Description" required></textarea>
-  <input [(ngModel)]="offreEmploi.salaire" name="salaire" placeholder="Salaire" required>
-  <input [(ngModel)]="offreEmploi.lieu" name="lieu" placeholder="Lieu" required>
-  <input [(ngModel)]="offreEmploi.typeContrat" name="typeContrat" placeholder="Type de contrat" required>
-  <input [(ngModel)]="offreEmploi.secteur" name="secteur" placeholder="Secteur" required>
-  <input [(ngModel)]="offreEmploi.niveauExperience" name="niveauExperience" placeholder="Niveau d'expérience" required>
-  <input [(ngModel)]="offreEmploi.niveauEducation" name="niveauEducation" placeholder="Niveau d'éducation" required>
-  <button type="submit">Publier l'offre d'emploi</button>
+  <input [(ngModel)]="jobsOffer.title" name="titre" placeholder="Titre" required>
+  <textarea [(ngModel)]="jobsOffer.description" name="description" placeholder="Description" required></textarea>
+  <input [(ngModel)]="jobsOffer.salary" name="salaire" placeholder="Salaire" required>
+  <input [(ngModel)]="jobsOffer.location" name="lieu" placeholder="Lieu" required>
+  <input [(ngModel)]="jobsOffer.typeContract" name="typeContrat" placeholder="Type de contrat" required>
+  <input [(ngModel)]="jobsOffer.businessSector" name="secteur" placeholder="Secteur" required>
+  <button type="submit">Publish the job offer</button>
 </form>

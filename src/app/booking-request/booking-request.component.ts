@@ -8,22 +8,20 @@ import { JobOfferService} from "../shared/job-offer.service";
 })
 export class BookingRequestComponent implements OnInit {
 
-  constructor(private offreEmploiService: JobOfferService) { }
+  constructor(private jobsOfferService: JobOfferService) { }
 
   ngOnInit(): void {
   }
   titre?: string;
   description?: string;
 
-  offreEmploi = {
-    titre: '',
+  jobsOffer = {
+    title: '',
     description: '',
-    salaire: null,
-    lieu: '',
-    typeContrat: '',
-    secteur: '',
-    niveauExperience: '',
-    niveauEducation: ''
+    salary: null,
+    location: '',
+    typeContract: '',
+    businessSector: ''
   };
 
   enregistrerOffre() {
@@ -32,7 +30,7 @@ export class BookingRequestComponent implements OnInit {
   }
 
   submit() {
-    this.offreEmploiService.creerOffre(this.offreEmploi).subscribe(
+    this.jobsOfferService.creerOffre(this.jobsOffer).subscribe(
       () => alert('Offre d\'emploi créée avec succès!'),
       err => alert('Erreur lors de la création de l\'offre d\'emploi: ' + err.message)
     );
