@@ -22,15 +22,16 @@ export class AccountCreationComponent implements OnInit {
   };
 
   submit() {
+    alert("les données a soumettre au serveur sont:" + JSON.stringify(this.jobSeeker));
     this.jobSeekerService.creerCompte(this.jobSeeker).subscribe(
-      () => alert('Compte créé avec succès!'),
-      err => alert('Erreur lors de la création du compte: ' + err.message)
-    );
-  }
-
-  creerCompte() {
-    // Créer le compte avec le backend
-    // Utiliser les valeurs de nom, email, motDePasse et typeCompte
+      response => {
+        alert("la reponse du server est: " + response);
+        alert('Compte créé avec succès!');
+      },
+      error => {
+        alert("malheureusement le server me renvoit l'errur suivante: "+ error + JSON.stringify(this.jobSeeker));
+        alert('Erreur lors de la création du compte: ' + error.message);
+      });
   }
 
 }

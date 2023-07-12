@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { JobOfferService} from "../shared/job-offer.service";
+import {SessionService} from "../shared/session.service";
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,24 +12,25 @@ import { JobOfferService} from "../shared/job-offer.service";
 })
 export class ConnectionComponent implements OnInit {
   reponse?: number;
-  constructor(private http: HttpClient, private authService: JobOfferService) { }
+  constructor(private http: HttpClient,
+              private authService: JobOfferService,
+              private sessionService: SessionService,
+              private router: Router) { }
 
   ngOnInit(): void {
   }
 
   credentials = {
     email: '',
-    motDePasse: ''
+    password: ''
   };
-
-  loginEmail?: string;
-  loginPassword?: string;
 
   submit() {
     this.authService.authentification(this.credentials).subscribe(
       response => {
-        localStorage.setItem('token', response.token);
-        alert('Authentification réussie!');
+        this.sessionService.setSession(response.token, response.userType);
+        console.log('Authentification réussie!');
+        this.router.navigate(['/dashboard']);
       },
       err => alert('Erreur lors de l\'authentification: ' + err.error.error)
     );

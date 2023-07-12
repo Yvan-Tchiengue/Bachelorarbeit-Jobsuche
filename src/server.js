@@ -14,7 +14,8 @@ var mysql = require('mysql');
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "tonyonline*123"
+  password: "tonyonline*123",
+  database: 'jobSearch'
 });
 /**
  * le code suivant est entre parentheses car je l'ai executé une seule fois pour creer la base
@@ -144,6 +145,7 @@ app.post('/api/jobs-offer', (req, res) => {
 });
 
 app.post('/api/account-creating', async (req, res) => {
+  alert("voici les données récuperées du front-end: ", req.body);
   const user = req.body;
 
   // Hash the password before storing it in the database
@@ -168,31 +170,80 @@ app.post('/api/account-creating', async (req, res) => {
       res.status(500).json({ error: 'Error when creating an account' });
       return;
     }
+    console.log('creation de compte ok');
     res.json({ success: true });
   });
 });
 
 
+/*app.post('/api/authentification', (req, res) => {
+    const { email, password } = req.body;
+
+    connection.query('SELECT * FROM JobSeeker WHERE email = ?', [email], async (error, results) => {
+        if (error || results.length === 0) {
+            return res.status(400).json({ error: 'Incorrect email address or password' });
+        }
+
+        const user = results[0];
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({ error: 'Incorrect email address or password' });
+        }
+
+        const token = jwt.sign({ id: user.id }, 'secretKey', { expiresIn: '1h' });
+
+        res.json({ token });
+    });
+}); */
+
 app.post('/api/authentification', (req, res) => {
   const { email, password } = req.body;
 
-  connection.query('SELECT * FROM JobSeeker WHERE email = ?', [email], async (error, results) => {
-    if (error || results.length === 0) {
-      return res.status(400).json({ error: 'Incorrect email address or password' });
+  // Check JobSeeker table
+  connection.query('SELECT * FROM JobSeeker WHERE email = ?', [email], async (error, jobSeekerResults) => {
+    if (error) {
+      return res.status(500).json({ error: 'Database error' });
     }
 
-    const user = results[0];
-    const isMatch = await bcrypt.compare(password, user.password);
+    // If there is a JobSeeker with this email
+    if (jobSeekerResults.length > 0) {
+      const user = jobSeekerResults[0];
+      const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch) {
-      return res.status(400).json({ error: 'Incorrect email address or password' });
+      if (!isMatch) {
+        return res.status(400).json({ error: 'Incorrect email address or password' });
+      }
+
+      const token = jwt.sign({ id: user.id, type: 'JobSeeker' }, 'secretKey', { expiresIn: '1h' });
+
+      return res.json({ token });
     }
 
-    const token = jwt.sign({ id: user.id }, 'secretKey', { expiresIn: '1h' });
+    // If there is no JobSeeker with this email, check Employer table
+    connection.query('SELECT * FROM Employer WHERE email = ?', [email], async (error, employerResults) => {
+      if (error) {
+        return res.status(500).json({ error: 'Database error' });
+      }
 
-    res.json({ token });
+      if (employerResults.length === 0) {
+        return res.status(400).json({ error: 'Incorrect email address or password' });
+      }
+
+      const user = employerResults[0];
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+        return res.status(400).json({ error: 'Incorrect email address or password' });
+      }
+
+      const token = jwt.sign({ id: user.id, type: 'Employer' }, 'secretKey', { expiresIn: '1h' });
+
+      res.json({ token });
+    });
   });
 });
+
 
 app.listen(port, () => {
   console.log('Serveur is running on port 3000');

@@ -1,10 +1,14 @@
 <h2>Tableau de bord</h2>
 
 <!-- Boutons spécifiques à l'employé -->
-<button *ngIf="typeCompte === 'employe'" routerLink="/offres-actuelles">Offres d'emploi</button>
-<button *ngIf="typeCompte === 'employe'" routerLink="/offres-acceptees">Offres acceptées</button>
-<button *ngIf="typeCompte === 'employe'" routerLink="/messages">Messages</button>
+<div *ngIf="userType === 'JobSeeker'">
+  <button routerLink="/offres-actuelles">Offres d'emploi</button>
+  <button routerLink="/offres-acceptees">Offres acceptées</button>
+  <button routerLink="/messages">Messages</button>
+</div>
 
 <!-- Boutons spécifiques à l'employeur -->
-<button *ngIf="typeCompte === 'employeur'" routerLink="/mes-jobs">Mes jobs</button>
-<button *ngIf="typeCompte === 'employeur'" routerLink="/candidatures">Candidatures</button>
+<div *ngIf="userType === 'Employer'">
+  <button routerLink="/mes-jobs">Mes jobs</button>
+  <button routerLink="/candidatures">Candidatures</button>
+</div>
