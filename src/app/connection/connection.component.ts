@@ -26,19 +26,16 @@ export class ConnectionComponent implements OnInit {
   };
 
   submit() {
+    alert("les credentials a envoyer au serveur sont: " +JSON.stringify(this.credentials));
     this.authService.authentification(this.credentials).subscribe(
       response => {
+        alert("la reponse du server est: " +JSON.stringify(response));
         this.sessionService.setSession(response.token, response.userType);
-        console.log('Authentification réussie!');
+        alert('Authentification réussie!' +JSON.stringify(response));
         this.router.navigate(['/dashboard']);
       },
-      err => alert('Erreur lors de l\'authentification: ' + err.error.error)
+      err => alert('Erreur lors de l\'authentification: ' + err.error.error + JSON.stringify(err))
     );
-  }
-
-  login() {
-    // Effectuer l'authentification avec le backend
-    // Utiliser les valeurs de loginEmail et loginPassword
   }
 
   demanderCalcul() {

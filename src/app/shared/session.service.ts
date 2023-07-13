@@ -8,8 +8,10 @@ export class SessionService {
   constructor() { }
 
   setSession(token: string, userType: string): void {
+    alert("le localstorage est: " +JSON.stringify(localStorage));
     localStorage.setItem('token', token);
     localStorage.setItem('userType', userType);
+    alert("le localstorage apres avoir set token et usertype provenant du backend est: " +JSON.stringify(localStorage));
   }
 
   getToken(): string | null {
@@ -20,8 +22,8 @@ export class SessionService {
     return localStorage.getItem('userType');
   }
 
-  /*clearSession(): void {
+  logOutSession(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('userType');
-  }*/
+  }
 }

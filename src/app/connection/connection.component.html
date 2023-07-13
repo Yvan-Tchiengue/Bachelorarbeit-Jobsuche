@@ -3,7 +3,7 @@
 <!-- Formulaire de connexion -->
 <form (ngSubmit)="submit()">
   <input [(ngModel)]="credentials.email" name="email" placeholder="Email" required>
-  <input [(ngModel)]="credentials.password" name="motDePasse" placeholder="Mot de passe" type="password" required>
+  <input [(ngModel)]="credentials.password" name="password" placeholder="Mot de passe" type="password" required>
   <button type="submit">Se connecter tony</button>
 </form>
 <button (click)="demanderCalcul()">Effectuer le calcul</button>

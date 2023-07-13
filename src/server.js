@@ -134,7 +134,7 @@ app.get('/api/calcul', (req, res) => {
 app.post('/api/jobs-offer', (req, res) => {
   const jobOffer = req.body;
   const query = 'INSERT INTO JobOffer SET ?';
-  connection.query(query, jobOffer, (err, result) => {
+  con.query(query, jobOffer, (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).json({ error: 'Error when creating the job offer' });
@@ -145,12 +145,14 @@ app.post('/api/jobs-offer', (req, res) => {
 });
 
 app.post('/api/account-creating', async (req, res) => {
-  alert("voici les données récuperées du front-end: ", req.body);
+  console.log("voici les données récuperées du front-end: ", JSON.stringify(req.body), req.body);
   const user = req.body;
 
   // Hash the password before storing it in the database
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
+  console.log(user.password);
+  console.log(user);
 
 
   let tableName;
@@ -164,7 +166,7 @@ app.post('/api/account-creating', async (req, res) => {
   }
 
   const query = `INSERT INTO ${tableName} SET ?`;
-  connection.query(query, user, (err, result) => {
+  con.query(query, user, (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).json({ error: 'Error when creating an account' });
@@ -198,10 +200,11 @@ app.post('/api/account-creating', async (req, res) => {
 }); */
 
 app.post('/api/authentification', (req, res) => {
+  console.log("voici les credentials recus du front-end: "+JSON.stringify(req.body));
   const { email, password } = req.body;
 
   // Check JobSeeker table
-  connection.query('SELECT * FROM JobSeeker WHERE email = ?', [email], async (error, jobSeekerResults) => {
+  con.query('SELECT * FROM JobSeeker WHERE email = ?', [email], async (error, jobSeekerResults) => {
     if (error) {
       return res.status(500).json({ error: 'Database error' });
     }
@@ -217,11 +220,12 @@ app.post('/api/authentification', (req, res) => {
 
       const token = jwt.sign({ id: user.id, type: 'JobSeeker' }, 'secretKey', { expiresIn: '1h' });
 
-      return res.json({ token });
+      //return res.json({ token });
+      return res.json({ token, userType: user.type_of_account });
     }
 
     // If there is no JobSeeker with this email, check Employer table
-    connection.query('SELECT * FROM Employer WHERE email = ?', [email], async (error, employerResults) => {
+    con.query('SELECT * FROM Employer WHERE email = ?', [email], async (error, employerResults) => {
       if (error) {
         return res.status(500).json({ error: 'Database error' });
       }
@@ -239,11 +243,29 @@ app.post('/api/authentification', (req, res) => {
 
       const token = jwt.sign({ id: user.id, type: 'Employer' }, 'secretKey', { expiresIn: '1h' });
 
-      res.json({ token });
+      //res.json({ token });
+      res.json({ token, userType: user.type_of_account });
     });
   });
 });
 
+//juste un test pour verifier si les données de creation de compte ont veritablement été créés
+//dans la base de données
+con.query('USE JobSearch', (err, result) => {
+  if (err) throw err;
+
+  con.query('SELECT * FROM JobSeeker', (err, result) => {
+    if (err) throw err;
+    console.log("JobSeeker table contents:");
+    console.log(result);
+  });
+
+  con.query('SELECT * FROM Employer', (err, result) => {
+    if (err) throw err;
+    console.log("Employer table contents:");
+    console.log(result);
+  });
+});
 
 app.listen(port, () => {
   console.log('Serveur is running on port 3000');

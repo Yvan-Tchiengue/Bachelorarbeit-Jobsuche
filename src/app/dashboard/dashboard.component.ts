@@ -13,12 +13,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.userType = this.sessionService.getUserType();
+    alert("le usertype est: " +this.userType);
   }
-
-  /*constructor() {
-    // Récupérer le type de compte depuis le backend après l'authentification
-    // Utiliser cette valeur pour afficher les boutons appropriés dans le template
-    // Exemple : this.typeCompte = 'employe' ou 'employeur'
-  }*/
 
 }
