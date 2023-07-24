@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { AppRoutingModule } from './app-routing.module';
 import {ReactiveFormsModule} from "@angular/forms";
@@ -32,7 +33,8 @@ import { JobOfferService} from "./shared/job-offer.service";
     FormsModule,
     ReactiveFormsModule,
     MatToolbarModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSidenavModule
   ],
   providers: [JobOfferService],
   bootstrap: [AppComponent]

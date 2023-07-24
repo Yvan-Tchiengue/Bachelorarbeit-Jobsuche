@@ -1,11 +1,45 @@
 <h2>Tableau de bord</h2>
 
+<mat-drawer-container class="example-container" [autosize]="true">
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <p>Auto-resizing sidenav</p>
+    <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
+    <button (click)="showFiller = !showFiller" mat-raised-button>
+      Toggle extra text
+    </button>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <button type="button" mat-button (click)="drawer.toggle()">
+      Toggle sidenav
+    </button>
+  </div>
+
+</mat-drawer-container>
+
+
 <!-- Boutons spécifiques à l'employé -->
-<div *ngIf="userType === 'jobseeker'">
-  <button routerLink="/offres-actuelles">Offres d'emploi</button>
-  <button routerLink="/offres-acceptees">Offres acceptées</button>
-  <button routerLink="/messages">Messages</button>
-</div>
+<mat-sidenav-container >
+  <mat-sidenav #sidenav [opened]="sidenavOpened">
+    <h2>Dashboard</h2>
+    <ul>
+      <li><a routerLink="/job-offers">Jobs Offer</a></li>
+      <li><a routerLink="/job-confirmation">Job Confirmation</a></li>
+      <li><a routerLink="/messages">Messages</a></li>
+      <li><a routerLink="/profile">Profile</a></li>
+      <li><a routerLink="/photos">Photos</a></li>
+      <li><a routerLink="/status-check">Status Check</a></li>
+      <li><a routerLink="/work-permit">Work Permit</a></li>
+      <li><a routerLink="/personal-data-sheet">Personal Data Sheet</a></li>
+    </ul>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <!-- Your content here -->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
 
 <!-- Boutons spécifiques à l'employeur -->
 <div *ngIf="userType === 'employe'">
